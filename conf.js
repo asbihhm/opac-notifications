@@ -1,19 +1,21 @@
-import webdriver, {By} from "selenium-webdriver";
-import env from "node-env-file";
+'use strict';
+
+import webdriver, {By} from 'selenium-webdriver';
+import env from 'node-env-file';
 
 env(__dirname + '/.env');
 
 class MatsuyamaOPAC {
 
-  constructor(driver, user) {
+  constructor (driver, user) {
     this.driver = driver;
     this.userId = user.id;
     this.passWord = user.pass;
     this.userInitial = user.initial;
     this.url = 'http://www.tosyokan.city.matsuyama.ehime.jp/opac/';
-  };
+  }
 
-  login() {
+  login () {
     var loginBtn = By.xpath('/html/body/form[1]/table/tbody/tr/td[2]'
                             + '/table/tbody/tr/td/table/tbody/tr[2]/td'
                             + '/table/tbody/tr/td[2]/input');
@@ -27,23 +29,23 @@ class MatsuyamaOPAC {
     return webdriver.promise.fulfilled(true);
   }
 
-  logout() {
+  logout () {
     this.driver.findElement(By.name('LOGOFF')).click();
 
     return webdriver.promise.fulfilled(true);
   }
 
-  static sendgrid() {
+  static sendgrid () {
     return require('sendgrid')(process.env.SENDGRIDKEY);
   }
 
-  static payload() {
+  static payload () {
     return {
       to: [process.env.USER1MAIL, process.env.USER2MAIL],
       from: process.env.SENDGRIDMAILFROM,
       subject: 'In your bookbag!',
       text: null
-    }
+    };
   }
 }
 
@@ -58,7 +60,7 @@ const users = {
     pass: process.env.USER2PASS,
     initial: process.env.USER2INITIAL
   }
-}
+};
 
 exports.OPAC = MatsuyamaOPAC;
 exports.users = users;
