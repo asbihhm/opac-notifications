@@ -193,7 +193,7 @@ module.exports = {
     "one-var-declaration-per-line": 0,
     "one-var": 0,
     "operator-assignment": 0,
-    "operator-linebreak": [1, "after"],
+    "operator-linebreak": [1, "before"],
     "padded-blocks": 0,
     "quote-props": [1, "as-needed", {"keywords": true}],
     "quotes": [1, "single", {"avoidEscape": true,

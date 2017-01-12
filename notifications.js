@@ -1,131 +1,99 @@
 'use strict';
 
-import webdriver, {By} from 'selenium-webdriver';
 import test from 'selenium-webdriver/testing';
 import assert from 'assert';
-import {OPAC, users} from './conf.js';
+import {IncomingWebhook} from '@slack/client';
+import OPACDriver from './OPACDriver';
+import Config from './Config';
 
-var d;  // driver
-const shelf = {borrow: [], hold: []};
-const tomorrow = Date.now() + 86400 * 1000;
-const usageStatus = By.xpath('/html/body/table/tbody/tr[1]/td[11]/a');
-const statusTable = By.xpath('/html/body/table[2]/tbody/tr/td/'
-                             + 'table/tbody/tr[2]/td');
-
-async function borrow (i, detail) {
-  let index = await detail[0].getText().then(t => {
-    if (t.toString() === ' ' || t.toString() === '') {
-      return {b: 3, p: 5, s: 6, t: 7};
+function buildAttachments (shelf, type, obj) {
+  return shelf[type].reduce((atta, book) => {
+    if (book.alert) {
+      if (type === 'onLoan') {
+        atta.warning.text += book.text + '\n';
+      } else if (type === 'hold') {
+        atta.notice.text += book.text + '\n';
+      }
     } else {
-      return {b: 2, p: 4, s: 5, t: 6};
+      atta[type].text += book.text + '\n';
     }
-  });
-
-  let borrowDate = await detail[index.b].getText().then(t => t.toString());
-  let period = await detail[index.p].getText().then(t => t.toString());
-  let status = await detail[index.s].getText().then(t => t.toString());
-  let title = await detail[index.t].getText().then(t => t.toString());
-  let periodDate = new Date(period);
-
-  this.push({
-    notice: periodDate.getTime() <= tomorrow,
-    text: `${i}: ${title}\n   ${borrowDate}  -  ${period}\n   ${status}`
-  });
+    return atta;
+  }, obj);
 }
 
-async function hold (i, detail) {
-  let status = await detail[4].getText().then(t => t.toString());
-  let title = await detail[5].getText().then(t => t.toString());
-  let rank = await detail[6].getText().then(t => t.toString());
-
-  this.push({
-    notice: status === 'Receivable',
-    text: `${i}: ${title}\n   ${rank}\n   ${status}`
-  });
+function toArrayAttachments (obj) {
+  let attachments = [obj.onLoan, obj.hold];
+  if (obj.notice.text !== '') { attachments.unshift(obj.notice); }
+  if (obj.warning.text !== '') { attachments.unshift(obj.warning); }
+  return attachments;
 }
 
-function toShelf (element, f) {
-  element.findElements(By.tagName('tr'))
-    .then(lis => {
-      lis.slice(2).map(b => b.findElements(By.tagName('td')).then(f));
-    });
-}
-
-function toGather (p, c) {
+function buildMessage (shelf, user) {
+  let onLoan = buildAttachments.bind(null, shelf, 'onLoan');
+  let hold = buildAttachments.bind(null, shelf, 'hold');
+  let attachments = toArrayAttachments(hold(onLoan({
+    warning: {
+      mrkdwn_in: ['text'],
+      fallback: 'Warning.',
+      color: '#ff0000',
+      title: 'WARNING',
+      text: ''
+    },
+    notice: {
+      mrkdwn_in: ['text'],
+      fallback: 'Notice.',
+      color: '#ffcc00',
+      title: 'NOTICE',
+      text: ''
+    },
+    onLoan: {
+      mrkdwn_in: ['text'],
+      fallback: 'On Loan.',
+      color: '#36a64f',
+      title: 'ON LOAN',
+      text: ''
+    },
+    hold: {
+      mrkdwn_in: ['text'],
+      fallback: 'Hold.',
+      color: '#764fa5',
+      title: 'HOLD',
+      text: ''
+    }
+  })));
   return {
-    count: p.count + 1,
-    noticeText: c.notice ? p.noticeText + '\n\n' + c.text : p.noticeText,
-    text: p.text + '\n\n' + c.text
+    text: '<@' + user.slackid + '> In your bookbag!',
+    attachments: attachments
   };
 }
-
 
 test.describe('opac page', function () {
   this.timeout(150000);
 
-  test.before(function () {
-    d = new webdriver.Builder()
-      .forBrowser('chrome')
-      .usingServer('http://localhost:4444/wd/hub')
-      .build();
-  });
-  test.after(function () { d.quit(); });
+  const webhook = new IncomingWebhook(Config.slack.url);
+  const errorMessage = 'error occured';
 
-  test.it('get user1 status', function () {
-    var opac = new OPAC(d, users.user1);
-    opac.login();
+  Config.users.forEach(function (user) {
+    var shelf;
 
-    d.findElement(usageStatus).click();
-    d.wait(d.findElement(statusTable).then(element => {
-      toShelf(element.findElement(By.name('EXTEND')),
-              borrow.bind(shelf.borrow, opac.userInitial));
-      toShelf(element.findElement(By.name('DELETE')),
-              hold.bind(shelf.hold, opac.userInitial));
-    }), 10000);
+    test.it('get status: ' + user.name, function () {
+      let opac = new OPACDriver(user);
+      opac.login();
+      opac.shelf().then(s => { shelf = s; });
+      opac.logout();
+    });
 
-    opac.logout();
-  });
-
-  test.it('get user2 status', function () {
-    var opac = new OPAC(d, users.user2);
-    opac.login();
-
-    d.findElement(usageStatus).click();
-    d.wait(d.findElement(statusTable).then(element => {
-      toShelf(element.findElement(By.name('EXTEND')),
-              borrow.bind(shelf.borrow, opac.userInitial));
-      toShelf(element.findElement(By.name('DELETE')),
-              hold.bind(shelf.hold, opac.userInitial));
-    }), 10000);
-
-    opac.logout();
-  });
-
-  test.it('send mail', function (done) {
-    let borrowing =
-          shelf.borrow.reduce(toGather, {count: 0, noticeText: '', text: ''});
-    let holding =
-          shelf.hold.reduce(toGather, {count: 0, noticeText: '', text: ''});
-
-    if (borrowing.noticeText === '' && holding.noticeText === '') {
-      done();
-    }
-    else
-    {
-      let message = `NOTICE${borrowing.noticeText}${holding.noticeText}\n\n`
-            + `------------------------\n\nON LOAN: ${borrowing.count}`
-            + `${borrowing.text}\n\n`
-            + `------------------------\n\nRESERVATIONS: ${holding.count}`
-            + holding.text;
-
-      var payload = OPAC.payload();
-      payload.text = message;
-      OPAC.sendgrid().send(payload, function (err, json) {
-        if (err) { console.log(err); done(); }
-        assert.deepStrictEqual(json.message, 'success');
+    test.it('send to slack: ' + user.name, function (done) {
+      let message = shelf ? buildMessage(shelf, user) : errorMessage;
+      if (message.attachments.length > 2 || message === errorMessage) {
+        webhook.send(message, (err, res) => {
+          assert.strictEqual(err, null);
+          assert.notStrictEqual(res, null);
+          done();
+        });
+      } else {
         done();
-      });
-    }
+      }
+    });
   });
-
 });

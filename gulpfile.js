@@ -1,7 +1,5 @@
 'use strict';
 
-/* eslint-disable no-console, no-process-exit */
-
 const gulp = require('gulp');
 const mocha = require('gulp-mocha');
 const selenium = require('selenium-standalone');
