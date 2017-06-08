@@ -81,6 +81,9 @@ test.describe('opac page', function() {
       d.login();
       d.shelf().then(s => { shelf = s; });
       d.logout();
+    });
+
+    test.it('quit driver: ' + user.name, function() {
       d.quit();
     });
 

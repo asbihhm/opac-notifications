@@ -57,6 +57,9 @@ class OPACDriver {
 
   logout() {
     this.driver.findElement(By.name('LOGOFF')).click();
+  }
+
+  quit() {
     this.driver.quit();
   }
 
