@@ -29,6 +29,7 @@ function toArrayAttachments(obj) {
 }
 
 function buildMessage(shelf, user) {
+  const slackId = user.slackId ? `<@${user.slackId}>` : '';
   const onLoan = buildAttachments.bind(null, shelf, 'onLoan');
   const hold = buildAttachments.bind(null, shelf, 'hold');
   const attachments = toArrayAttachments(hold(onLoan({
@@ -62,7 +63,7 @@ function buildMessage(shelf, user) {
     }
   })));
   return {
-    text: '<@' + user.slackid + '> In your bookbag!',
+    text: slackId + ' In your bookbag!',
     attachments: attachments
   };
 }
@@ -71,23 +72,24 @@ test.describe('opac page', function() {
   this.timeout(150000);
 
   const webhook = new IncomingWebhook(Config.slack.url);
-  const errorMessage = 'error occured';
+  const errorMessage = 'error occurred';
 
-  Config.users.forEach(function(user) {
+  Config.users.forEach((user, idx) => {
     let shelf;
     const d = new OPACDriver(user);
+    const userName = user.name || idx;
 
-    test.it('get status: ' + user.name, function() {
+    test.it('get status: ' + userName, () => {
       d.login();
       d.shelf().then(s => { shelf = s; });
       d.logout();
     });
 
-    test.it('quit driver: ' + user.name, function() {
+    test.it('quit driver: ' + userName, () => {
       d.quit();
     });
 
-    test.it('send to slack: ' + user.name, function(done) {
+    test.it('send to slack: ' + userName, done => {
       const message = shelf ? buildMessage(shelf, user) : errorMessage;
       if (message.attachments.length > 2 || message === errorMessage) {
         webhook.send(message, (err, res) => {

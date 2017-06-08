@@ -4,10 +4,7 @@ const gulp = require('gulp');
 const mocha = require('gulp-mocha');
 const selenium = require('selenium-standalone');
 
-require('babel-register');
-require('babel-polyfill');
-
-gulp.task('selenium', function(done) {
+gulp.task('selenium', done => {
   selenium.install(err => {
     if (err) { return done(err); }
     /* eslint-disable  no-shadow */
@@ -22,9 +19,12 @@ gulp.task('selenium', function(done) {
   });
 });
 
-gulp.task('default', ['selenium'], function() {
-  return gulp.src('notifications.js', {read: false})
-    .pipe(mocha())
+gulp.task('default', ['selenium'], () => {
+  return gulp.src('notifications.js')
+    .pipe(mocha({
+      require: ['babel-polyfill'],
+      compilers: 'js:babel-register'
+    }))
     .on('error', err => {
       /* eslint-disable no-console */
       console.log(err);

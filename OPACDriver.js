@@ -1,3 +1,7 @@
+/*
+ * OPAC Driver for https://www.tosyokan.city.matsuyama.ehime.jp/opac/
+ */
+
 'use strict';
 
 import {Builder, By, promise, until} from 'selenium-webdriver';
@@ -5,7 +9,8 @@ import chrome from 'selenium-webdriver/chrome';
 
 const chromeOptions = new chrome.Options().setUserPreferences({
   credentials_enable_service: false,
-  'profile.password_manager_enabled': false
+  'profile.password_manager_enabled': false,
+  'intl.accept_languages': 'en-us'
 });
 
 async function books(elem, f) {
@@ -15,13 +20,15 @@ async function books(elem, f) {
 }
 
 async function onLoan(detail) {
+  // If a renewable book in the table, an empty or checkbox column exists
+  // at leftmost.
   const index = await detail[0].getText().then(t => {
     if (t.toString() === ' ' || t.toString() === '') {
-      return {b: 3, p: 5, s: 6, t: 7};
+      return {d: 3, p: 5, s: 6, t: 7};
     }
-    return {b: 2, p: 4, s: 5, t: 6};
+    return {d: 2, p: 4, s: 5, t: 6};
   });
-  const onLoanDate = await detail[index.b].getText().then(t => t.toString());
+  const onLoanDate = await detail[index.d].getText().then(t => t.toString());
   const period = await detail[index.p].getText().then(t => t.toString());
   const status = await detail[index.s].getText().then(t => t.toString());
   const title = await detail[index.t].getText().then(t => t.toString());
