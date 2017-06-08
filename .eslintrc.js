@@ -202,7 +202,7 @@ module.exports = {
     "semi": 2,
     "sort-vars": 0,
     "space-before-blocks": 1,
-    "space-before-function-paren": 1,
+    "space-before-function-paren": [1, "never"],
     "space-in-parens": 1,
     "space-infix-ops": 0,
     "space-unary-ops": 0,

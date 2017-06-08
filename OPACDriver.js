@@ -2,34 +2,34 @@
 
 import {Builder, By, promise, until} from 'selenium-webdriver';
 
-async function books (elem, f) {
+async function books(elem, f) {
   return elem.findElements(By.tagName('tr'))
     .then(l => promise.map(l.slice(2),
                            b => b.findElements(By.tagName('td')).then(f)));
 }
 
-async function onLoan (detail) {
-  let index = await detail[0].getText().then(t => {
+async function onLoan(detail) {
+  const index = await detail[0].getText().then(t => {
     if (t.toString() === ' ' || t.toString() === '') {
       return {b: 3, p: 5, s: 6, t: 7};
     }
     return {b: 2, p: 4, s: 5, t: 6};
   });
-  let onLoanDate = await detail[index.b].getText().then(t => t.toString());
-  let period = await detail[index.p].getText().then(t => t.toString());
-  let status = await detail[index.s].getText().then(t => t.toString());
-  let title = await detail[index.t].getText().then(t => t.toString());
-  let periodDate = new Date(period);
+  const onLoanDate = await detail[index.b].getText().then(t => t.toString());
+  const period = await detail[index.p].getText().then(t => t.toString());
+  const status = await detail[index.s].getText().then(t => t.toString());
+  const title = await detail[index.t].getText().then(t => t.toString());
+  const periodDate = new Date(period);
   return {
     alert: periodDate.getTime() <= Date.now()+86400000,
     text: `*${title}*\n${onLoanDate}〜${period},   _${status}_`
   };
 }
 
-async function hold (detail) {
-  let status = await detail[4].getText().then(t => t.toString());
-  let title = await detail[5].getText().then(t => t.toString());
-  let rank = await detail[6].getText().then(t => t.toString());
+async function hold(detail) {
+  const status = await detail[4].getText().then(t => t.toString());
+  const title = await detail[5].getText().then(t => t.toString());
+  const rank = await detail[6].getText().then(t => t.toString());
   return {
     alert: status === 'Receivable',
     text: `*${title}*\n${rank},    _${status}_`
@@ -37,7 +37,7 @@ async function hold (detail) {
 }
 
 class OPACDriver {
-  constructor (user) {
+  constructor(user) {
     this.driver = new Builder()
       .forBrowser('chrome')
       .usingServer('http://localhost:4444/wd/hub')
@@ -46,7 +46,7 @@ class OPACDriver {
     this.userPass = user.pass;
   }
 
-  login () {
+  login() {
     this.driver.get('https://www.tosyokan.city.matsuyama.ehime.jp/opac/');
     this.driver.findElement(By.name('USERID')).sendKeys(this.userId);
     this.driver.findElement(By.name('PASSWORD')).sendKeys(this.userPass);
@@ -55,12 +55,12 @@ class OPACDriver {
       + 'table/tbody/tr[2]/td/table/tbody/tr/td[2]/input')).click();
   }
 
-  logout () {
+  logout() {
     this.driver.findElement(By.name('LOGOFF')).click();
     this.driver.quit();
   }
 
-  shelf () {
+  shelf() {
     this.driver.findElement(By.xpath(
       '/html/body/table/tbody/tr[1]/td[11]/a')).click();
     return this.driver.wait(until.elementLocated(By.xpath(
@@ -73,4 +73,4 @@ class OPACDriver {
   }
 }
 
-module.exports = OPACDriver;
+export default OPACDriver;
