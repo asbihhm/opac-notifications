@@ -1,6 +1,12 @@
 'use strict';
 
 import {Builder, By, promise, until} from 'selenium-webdriver';
+import chrome from 'selenium-webdriver/chrome';
+
+const chromeOptions = new chrome.Options().setUserPreferences({
+  credentials_enable_service: false,
+  'profile.password_manager_enabled': false
+});
 
 async function books(elem, f) {
   return elem.findElements(By.tagName('tr'))
@@ -40,6 +46,7 @@ class OPACDriver {
   constructor(user) {
     this.driver = new Builder()
       .forBrowser('chrome')
+      .setChromeOptions(chromeOptions)
       .usingServer('http://localhost:4444/wd/hub')
       .build();
     this.userId = user.id;
