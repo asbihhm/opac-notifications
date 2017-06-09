@@ -1,4 +1,4 @@
-/*
+/**
  * OPAC Driver for https://www.tosyokan.city.matsuyama.ehime.jp/opac/
  */
 
@@ -20,8 +20,8 @@ async function books(elem, f) {
 }
 
 async function onLoan(detail) {
-  // If a renewable book in the table, an empty or checkbox column exists
-  // at leftmost.
+  // If there is a renewable book in the table,
+  // an empty or a checkbox column appears at leftmost.
   const index = await detail[0].getText().then(t => {
     if (t.toString() === ' ' || t.toString() === '') {
       return {d: 3, p: 5, s: 6, t: 7};

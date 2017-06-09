@@ -3,7 +3,8 @@ Send the status of OPAC to a channel in [Slack](https://slack.com).
 
 ## requirements
 * chrome(chromium) >= 57
-* java >= 1.8
+* java >= 8
+* yarn
 
 ## usage
 1. touch Config.js
@@ -27,9 +28,4 @@ export default {
 ```bash
 yarn install
 yarn start
-```
-or
-```bash
-npm install
-npm start
 ```

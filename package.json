@@ -1,7 +1,7 @@
 {
   "name": "opac-notifications",
   "version": "0.2.0",
-  "description": "public library notifications",
+  "description": "Send the status of OPAC to a channel in Slack.",
   "author": "asbihhm",
   "license": "MIT",
   "private": true,
@@ -27,6 +27,5 @@
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "eslint": "^3.19.0"
-  },
-  "repository": "https://github.com/asbihhm/opac-notifications"
+  }
 }
