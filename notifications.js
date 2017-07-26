@@ -3,8 +3,8 @@
 import test from 'selenium-webdriver/testing';
 import assert from 'assert';
 import {IncomingWebhook} from '@slack/client';
-import OPACDriver from './OPACDriver';
-import Config from './Config';
+import OPACDriver from './OPACDriver.js';
+import Config from './Config.js';
 
 function buildAttachments(shelf, type, obj) {
   return shelf[type].reduce((atta, book) => {

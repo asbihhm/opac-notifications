@@ -23,9 +23,7 @@ async function onLoan(detail) {
   // If there is a renewable book in the table,
   // an empty or a checkbox column appears at leftmost.
   const index = await detail[0].getText().then(t => {
-    if (t.toString() === ' ' || t.toString() === '') {
-      return {d: 3, p: 5, s: 6, t: 7};
-    }
+    if (t.toString().trim() === '') { return {d: 3, p: 5, s: 6, t: 7}; }
     return {d: 2, p: 4, s: 5, t: 6};
   });
   const onLoanDate = await detail[index.d].getText().then(t => t.toString());
