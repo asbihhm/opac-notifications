@@ -1,5 +1,5 @@
 # opac notifications
-Send the status of OPAC to a channel in [Slack](https://slack.com).
+Send the status of Matsuyama OPAC to a channel in [Slack](https://slack.com).
 
 ## requirements
 * chrome(chromium) >= 57
