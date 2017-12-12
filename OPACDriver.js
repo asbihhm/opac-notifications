@@ -2,8 +2,6 @@
  * OPAC Driver for https://www.tosyokan.city.matsuyama.ehime.jp/opac/
  */
 
-'use strict';
-
 import {Builder, By, promise, until} from 'selenium-webdriver';
 import chrome from 'selenium-webdriver/chrome';
 

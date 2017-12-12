@@ -1,5 +1,3 @@
-'use strict';
-
 import test from 'selenium-webdriver/testing';
 import assert from 'assert';
 import {IncomingWebhook} from '@slack/client';
@@ -93,6 +91,8 @@ test.describe('opac page', function() {
       const message = shelf ? buildMessage(shelf, user) : errorMessage;
       if (message.attachments.length > 2 || message === errorMessage) {
         webhook.send(message, (err, res) => {
+          console.log(res);
+          console.log(err);
           assert.strictEqual(err, null);
           assert.notStrictEqual(res, null);
           done();
