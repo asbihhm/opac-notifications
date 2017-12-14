@@ -26,9 +26,7 @@ gulp.task('default', ['selenium'], () => {
       compilers: 'js:babel-register'
     }))
     .on('error', err => {
-      /* eslint-disable no-console */
-      console.log(err);
-      /* eslint-enable no-console */
+      console.log(err); // eslint-disable-line no-console
       selenium.child.kill();
     })
     .once('end', () => selenium.child.kill());
