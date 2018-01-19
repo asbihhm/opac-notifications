@@ -2,7 +2,7 @@
 Send the status of Matsuyama OPAC to a channel in [Slack](https://slack.com).
 
 ## requirements
-* chrome(chromium) >= 60
+* chrome(chromium) >= 57
 * java >= 8
 * yarn
 
