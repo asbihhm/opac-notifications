@@ -1,31 +1,31 @@
 {
   "name": "opac-notifications",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Send the status of OPAC to a channel in Slack.",
   "author": "asbish",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "gulp"
+    "start": "gulp",
+    "test": "gulp test"
   },
   "engines": {
-    "node": "6.x",
-    "npm": "3.x"
+    "node": "8.x"
   },
   "dependencies": {
-    "@slack/client": "^3.10.0",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-stage-3": "^6.24.1",
-    "babel-register": "^6.24.1",
+    "@slack/client": "^3.15.0",
+    "chai": "^4.1.2",
     "gulp": "^3.9.1",
-    "gulp-mocha": "^4.3.1",
-    "mocha": "^3.4.2",
-    "selenium-standalone": "^6.4.1",
-    "selenium-webdriver": "^3.4.0"
+    "gulp-mocha": "^5.0.0",
+    "mocha": "^5.0.0",
+    "selenium-standalone": "^6.12.0",
+    "selenium-webdriver": "3.6"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.3",
-    "eslint": "^3.19.0"
+    "eslint": "4.9.0",
+    "eslint-config-airbnb-base": "12.1.0",
+    "eslint-plugin-import": "2.7.0",
+    "express": "^4.16.2",
+    "sinon": "^4.1.6"
   }
 }

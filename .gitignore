@@ -1,5 +1,5 @@
 .tern-port
 .tern-project
 node_modules/
-npm-debug.log
+*.log
 Config.js

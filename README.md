@@ -2,25 +2,25 @@
 Send the status of Matsuyama OPAC to a channel in [Slack](https://slack.com).
 
 ## requirements
-* chrome(chromium) >= 57
+* chrome(chromium) >= 60
 * java >= 8
 * yarn
 
 ## usage
 1. touch Config.js
 ```javascript
-export default {
+module.exports = {
   slack: {
-    url: '' // Incoming Webhook URL
+    url: '', // Incoming Webhook URL
   },
   users: [
     {
-      id: '',     // OPAC ID
-      pass: '',   // OPAC Password
-      name: '',   // optional: use in test title
-      slackId: '' // optional: use in slack text
-    }
-  ]
+      id: '',      // OPAC ID
+      pass: '',    // OPAC Password
+      name: '',    // optional: use in test title
+      slackId: '', // optional: use in slack text
+    },
+  ],
 };
 ```
 
