@@ -47,7 +47,7 @@ async function onLoan(detail) {
 
 async function hold(detail) {
   const holdDateAndLimit = await detail[3].getText().then(t => t.toString());
-  const [holdDate, dueDate] = await holdDateAndLimit.split('\n');
+  const [holdDate, dueDate] = holdDateAndLimit.split('\n');
   const statusAndRank = await detail[4].getText().then(t => t.toString());
   const [status, rank] = statusAndRank.split('\n');
   const title = await detail[5].getText().then(t => t.toString());
