@@ -19,7 +19,7 @@ async function books(elem, f) {
   const trs = await elem.findElements(By.tagName('tr'));
   return Promise.all(
     trs
-      .slice(1)// remove thead/tr
+      .slice(1) // remove thead/tr
       .map(tr => tr.findElements(By.tagName('td')).then(f)),
   );
 }
@@ -27,10 +27,9 @@ async function books(elem, f) {
 async function onLoan(detail) {
   // If there is a renewable book in the table,
   // an empty or a checkbox column appears at leftmost.
-  const index = await detail[0].getText().then((t) => {
-    if (t.toString().trim() === '') return { d: 3, p: 4, t: 5, s: 6 };
-    return { d: 2, p: 3, t: 4, s: 5 };
-  });
+  let index = { d: 2, p: 3, t: 4, s: 5 };
+  if (detail.length > 6) index = { d: 3, p: 4, t: 5, s: 6 };
+
   const loanDateAndPlace =
         await detail[index.d].getText().then(t => t.toString());
   const loanDate = loanDateAndPlace.split('\n')[0];
@@ -46,12 +45,12 @@ async function onLoan(detail) {
 }
 
 async function hold(detail) {
-  const holdDateAndLimit = await detail[3].getText().then(t => t.toString());
-  const [holdDate, dueDate] = holdDateAndLimit.split('\n');
+  const holdDateAndDueDate =
+        await detail[3].getText().then(t => t.toString());
+  const [holdDate, dueDate] = holdDateAndDueDate.split('\n');
   const statusAndRank = await detail[4].getText().then(t => t.toString());
   const [status, rank] = statusAndRank.split('\n');
   const title = await detail[5].getText().then(t => t.toString());
-
   return {
     alert: status === 'Receivable',
     text:
