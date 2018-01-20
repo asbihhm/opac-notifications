@@ -26,7 +26,7 @@ gulp.task('default', ['selenium'], () => (
       console.log(err);
       selenium.child.kill();
     })
-    .once('end', () => selenium.child.kill())
+    .once('end', () => { selenium.child.kill(); })
 ));
 
 gulp.task('test', ['selenium'], () => {

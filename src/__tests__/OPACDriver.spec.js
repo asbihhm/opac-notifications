@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-expressions */
+/* eslint-disable no-unused-expressions, func-names */
 
 const { expect } = require('chai');
 const sinon = require('sinon');
@@ -9,12 +9,8 @@ const user = {
   pass: 'bar',
 };
 
-xit('login');
-xit('logout');
-xit('toStatusPage');
-
 describe('getShelf', () => {
-  describe('hold', function hold() {
+  describe('hold', function () {
     this.timeout(150000);
 
     let d;
@@ -40,7 +36,7 @@ describe('getShelf', () => {
     });
   });
 
-  describe('warn-and-notice', function hold() {
+  describe('warn-and-notice', function () {
     this.timeout(150000);
 
     let d;

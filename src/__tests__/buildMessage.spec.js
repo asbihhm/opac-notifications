@@ -17,7 +17,7 @@ describe('buildMessage', () => {
     expect(buildMessage(shelf, user).attachments.length).to.equal(2);
   });
 
-  it('.attachments WARNING should be exist when shelf.onLoan has alert items', () => {
+  it('.attachments WARNING should exist when shelf.onLoan has alert items', () => {
     const shelf = {
       onLoan: [{ alert: true, text: 'abc' }],
       hold: [{ alert: false, text: 'def' }],
@@ -27,7 +27,7 @@ describe('buildMessage', () => {
     expect(attachments[0].title).to.equal('WARNING');
   });
 
-  it('.attachments NOTICE should be exist when shelf.hold has alert items', () => {
+  it('.attachments NOTICE should exist when shelf.hold has alert items', () => {
     const shelf = {
       onLoan: [{ alert: false, text: 'abc' }],
       hold: [{ alert: true, text: 'def' }],

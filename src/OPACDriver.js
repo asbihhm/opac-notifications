@@ -16,12 +16,12 @@ chromeOptions.setUserPreferences({
 });
 
 async function books(elem, f) {
-  return elem
-    .findElements(By.tagName('tr'))
-    .then(l => Promise.all(
-      l.slice(1) // remove thead/tr
-        .map(b => b.findElements(By.tagName('td')).then(f)),
-    ));
+  const trs = await elem.findElements(By.tagName('tr'));
+  return Promise.all(
+    trs
+      .slice(1)// remove thead/tr
+      .map(tr => tr.findElements(By.tagName('td')).then(f)),
+  );
 }
 
 async function onLoan(detail) {
