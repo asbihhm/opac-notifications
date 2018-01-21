@@ -60,14 +60,17 @@ async function hold(detail) {
 
 class OPACDriver {
   constructor(user, { url } = {}) {
-    this.driver = new Builder()
+    this.id = user.id;
+    this.pass = user.pass;
+    this.url = url || 'https://www.tosyokan.city.matsuyama.ehime.jp/opac/';
+  }
+
+  async build() {
+    this.driver = await new Builder()
       .forBrowser('chrome')
       .setChromeOptions(chromeOptions)
       .usingServer('http://localhost:4444/wd/hub')
       .build();
-    this.id = user.id;
-    this.pass = user.pass;
-    this.url = url || 'https://www.tosyokan.city.matsuyama.ehime.jp/opac/';
   }
 
   async getUrl() {

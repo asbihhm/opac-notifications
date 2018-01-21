@@ -17,6 +17,10 @@ describe('opac page', function runner() {
     const d = new OPACDriver(user);
     const userName = user.name || idx;
 
+    it(`build driver: ${userName}`, async () => {
+      await d.build();
+    });
+
     it(`get status: ${userName}`, async () => {
       await d.getUrl();
       await d.login();

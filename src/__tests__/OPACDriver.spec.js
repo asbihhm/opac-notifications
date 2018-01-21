@@ -20,6 +20,7 @@ describe('getShelf', () => {
       d = new OPACDriver(user, {
         url: 'http://localhost:3000/hold.html',
       });
+      await d.build();
       await d.getUrl();
       clock = sinon.useFakeTimers(new Date('2018-01-10'));
     });
@@ -46,6 +47,7 @@ describe('getShelf', () => {
       d = new OPACDriver(user, {
         url: 'http://localhost:3000/warn-and-notice.html',
       });
+      await d.build();
       await d.getUrl();
       clock = sinon.useFakeTimers(new Date('2018-01-18'));
     });
