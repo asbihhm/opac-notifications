@@ -35,7 +35,7 @@ describe('opac page', function runner() {
 
     it(`send to slack: ${userName}`, (done) => {
       const message = shelf ? buildMessage(shelf, user) : errorMessage;
-      if (message.attachments.length > 2 || message === errorMessage) {
+      if (message === errorMessage || message.attachments.length > 2) {
         webhook.send(message, (err, res) => {
           expect(err).to.be.null;
           expect(res).to.not.be.null;
