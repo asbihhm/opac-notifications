@@ -4,7 +4,7 @@ Send the status of Matsuyama OPAC to a channel in [Slack](https://slack.com).
 ## requirements
 * chrome(chromium) >= 60
 * java >= 8
-* yarn
+* Node >= 8.9
 
 ## usage
 1. touch Config.js
