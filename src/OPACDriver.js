@@ -8,7 +8,7 @@ const chrome = require('selenium-webdriver/chrome');
 promise.USE_PROMISE_MANAGER = false;
 
 const chromeOptions = new chrome.Options();
-chromeOptions.addArguments(['headless', 'window-size=1920,1080']);
+chromeOptions.addArguments(['headless', 'lang=en', 'window-size=1920,1080']);
 chromeOptions.setUserPreferences({
   credentials_enable_service: false,
   'profile.password_manager_enabled': false,
