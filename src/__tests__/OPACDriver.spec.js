@@ -30,7 +30,7 @@ describe('getShelf', () => {
       clock.restore();
     });
 
-    it('should be false, .onLoan[0].alert', async () => {
+    it('.onLoan[0].alert should be false', async () => {
       await d.getShelf().then((shelf) => {
         expect(shelf.onLoan[0].alert).to.be.false;
       });
@@ -57,25 +57,25 @@ describe('getShelf', () => {
       clock.restore();
     });
 
-    it('shold be true, onLoan[0].alert', async () => {
+    it('.onLoan[0].alert should be true', async () => {
       await d.getShelf().then((shelf) => {
         expect(shelf.onLoan[0].alert).to.be.true;
       });
     });
 
-    it('shold be false, onLoan[1].alert', async () => {
+    it('.onLoan[1].alert should be false', async () => {
       await d.getShelf().then((shelf) => {
         expect(shelf.onLoan[1].alert).to.be.false;
       });
     });
 
-    it('shold be false, hold[0].alert', async () => {
+    it('.hold[0].alert should be false', async () => {
       await d.getShelf().then((shelf) => {
         expect(shelf.hold[0].alert).to.be.false;
       });
     });
 
-    it('shold be true, hold[2].alert', async () => {
+    it('.hold[2].alert should be true', async () => {
       await d.getShelf().then((shelf) => {
         expect(shelf.hold[2].alert).to.be.true;
       });
