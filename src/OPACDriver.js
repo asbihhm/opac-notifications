@@ -49,12 +49,17 @@ async function onLoan(detail) {
 }
 
 async function hold(detail) {
+  // If there is only one recivable book in the table,
+  // an select column disappears at leftmost.
+  let index = { d: 2, s: 3, t: 4 };
+  if (detail.length > 7) index = { d: 3, s: 4, t: 5 };
+
   const holdDateAndDueDate =
-        await detail[3].getText().then(t => t.toString());
+        await detail[index.d].getText().then(t => t.toString());
   const [holdDate, dueDate] = holdDateAndDueDate.split('\n');
-  const statusAndRank = await detail[4].getText().then(t => t.toString());
+  const statusAndRank = await detail[index.s].getText().then(t => t.toString());
   const [status, rank] = statusAndRank.split('\n');
-  const title = await detail[5].getText().then(t => t.toString());
+  const title = await detail[index.t].getText().then(t => t.toString());
   return {
     alert: status === 'Receivable',
     text:
