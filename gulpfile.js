@@ -30,11 +30,11 @@ function run() {
 }
 
 function test() {
-  const server = express();
-  server.use(express.static(path.resolve(__dirname, 'mock')));
-  server.listen(3000);
+  const app = express();
+  app.use(express.static(path.resolve(__dirname, 'test/test-pages')));
+  const server = app.listen(3000);
 
-  return gulp.src('src/__tests__/*.spec.js')
+  return gulp.src('test/*.spec.js')
     .pipe(mocha())
     .on('error', (err) => {
       console.log(err);
@@ -42,7 +42,7 @@ function test() {
     })
     .once('end', () => {
       selenium.child.kill();
-      process.exit(0);
+      server.close();
     });
 }
 

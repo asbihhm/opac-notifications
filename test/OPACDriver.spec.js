@@ -2,7 +2,7 @@
 
 const { expect } = require('chai');
 const sinon = require('sinon');
-const OPACDriver = require('../OPACDriver.js');
+const OPACDriver = require('../src/OPACDriver.js');
 
 const user = {
   id: 'foo',
@@ -10,7 +10,7 @@ const user = {
 };
 
 describe('getShelf', () => {
-  describe('hold', function () {
+  describe('onLoan', function () {
     this.timeout(150000);
 
     let d;
@@ -18,7 +18,7 @@ describe('getShelf', () => {
 
     beforeEach(async () => {
       d = new OPACDriver(user, {
-        url: 'http://localhost:3000/hold.html',
+        url: 'http://localhost:3000/on-loan.html',
       });
       await d.build();
       await d.getUrl();
@@ -37,7 +37,31 @@ describe('getShelf', () => {
     });
   });
 
-  describe('warn-and-notice', function () {
+  describe('hold', function () {
+    this.timeout(150000);
+
+    let d;
+
+    beforeEach(async () => {
+      d = new OPACDriver(user, {
+        url: 'http://localhost:3000/hold.html',
+      });
+      await d.build();
+      await d.getUrl();
+    });
+
+    afterEach(async () => {
+      await d.quit();
+    });
+
+    it('.hold[0].alert should be true', async () => {
+      await d.getShelf().then((shelf) => {
+        expect(shelf.hold[0].alert).to.be.true;
+      });
+    });
+  });
+
+  describe('onLoan and hold', function () {
     this.timeout(150000);
 
     let d;
@@ -45,7 +69,7 @@ describe('getShelf', () => {
 
     beforeEach(async () => {
       d = new OPACDriver(user, {
-        url: 'http://localhost:3000/warn-and-notice.html',
+        url: 'http://localhost:3000/on-loan-and-hold.html',
       });
       await d.build();
       await d.getUrl();

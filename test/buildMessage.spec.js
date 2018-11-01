@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 
 const { expect } = require('chai');
-const buildMessage = require('../buildMessage.js');
+const buildMessage = require('../src/buildMessage.js');
 
 const user = {
   id: 'foo',
