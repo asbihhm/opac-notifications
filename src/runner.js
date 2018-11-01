@@ -33,16 +33,18 @@ describe('opac page', function runner() {
       await d.quit();
     });
 
-    it(`send to slack: ${userName}`, (done) => {
+    it(`send to slack: ${userName}`, async () => {
       const message = shelf ? buildMessage(shelf, user) : errorMessage;
+
+      if (process.env.NODE_ENV === 'development') {
+        console.log(message); // eslint-disable-line no-console
+        return;
+      }
+
       if (message === errorMessage || message.attachments.length > 2) {
-        webhook.send(message, (err, res) => {
-          expect(err).to.be.null;
+        await webhook.send(message).then((res) => {
           expect(res).to.not.be.null;
-          done();
         });
-      } else {
-        done();
       }
     });
   });

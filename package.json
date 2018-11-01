@@ -1,25 +1,26 @@
 {
   "name": "opac-notifications",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Send the status of OPAC to a channel in Slack.",
   "author": "asbish",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "gulp",
+    "start": "gulp run",
+    "dev": "NODE_ENV=development gulp run",
     "test": "gulp test"
   },
   "engines": {
     "node": "8.x"
   },
   "dependencies": {
-    "@slack/client": "^3.15.0",
+    "@slack/client": "^4.8.0",
     "chai": "^4.1.2",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "gulp-mocha": "^5.0.0",
     "mocha": "^5.0.0",
     "selenium-standalone": "^6.12.0",
-    "selenium-webdriver": "3.6"
+    "selenium-webdriver": "^3.6"
   },
   "devDependencies": {
     "eslint": "4.9.0",
