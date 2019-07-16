@@ -10,7 +10,7 @@ const user = {
 };
 
 describe('getShelf', () => {
-  describe('onLoan', function () {
+  describe('onLoan', function() {
     this.timeout(150000);
 
     let d;
@@ -31,13 +31,13 @@ describe('getShelf', () => {
     });
 
     it('.onLoan[0].alert should be false', async () => {
-      await d.getShelf().then((shelf) => {
+      await d.getShelf().then(shelf => {
         expect(shelf.onLoan[0].alert).to.be.false;
       });
     });
   });
 
-  describe('hold', function () {
+  describe('hold', function() {
     this.timeout(150000);
 
     let d;
@@ -55,13 +55,13 @@ describe('getShelf', () => {
     });
 
     it('.hold[0].alert should be true', async () => {
-      await d.getShelf().then((shelf) => {
+      await d.getShelf().then(shelf => {
         expect(shelf.hold[0].alert).to.be.true;
       });
     });
   });
 
-  describe('onLoan and hold', function () {
+  describe('onLoan and hold', function() {
     this.timeout(150000);
 
     let d;
@@ -82,25 +82,25 @@ describe('getShelf', () => {
     });
 
     it('.onLoan[0].alert should be true', async () => {
-      await d.getShelf().then((shelf) => {
+      await d.getShelf().then(shelf => {
         expect(shelf.onLoan[0].alert).to.be.true;
       });
     });
 
     it('.onLoan[1].alert should be false', async () => {
-      await d.getShelf().then((shelf) => {
+      await d.getShelf().then(shelf => {
         expect(shelf.onLoan[1].alert).to.be.false;
       });
     });
 
     it('.hold[0].alert should be false', async () => {
-      await d.getShelf().then((shelf) => {
+      await d.getShelf().then(shelf => {
         expect(shelf.hold[0].alert).to.be.false;
       });
     });
 
     it('.hold[2].alert should be true', async () => {
-      await d.getShelf().then((shelf) => {
+      await d.getShelf().then(shelf => {
         expect(shelf.hold[2].alert).to.be.true;
       });
     });

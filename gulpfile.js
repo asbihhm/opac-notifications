@@ -7,10 +7,14 @@ const selenium = require('selenium-standalone');
 const express = require('express');
 
 function startSelenium(done) {
-  selenium.install((err) => {
-    if (err) { return done(err); }
+  selenium.install(err => {
+    if (err) {
+      return done(err);
+    }
     selenium.start((err, child) => {
-      if (err) { return done(err); }
+      if (err) {
+        return done(err);
+      }
       setTimeout(() => {
         selenium.child = child;
         done();
@@ -20,13 +24,16 @@ function startSelenium(done) {
 }
 
 function run() {
-  return gulp.src('src/runner.js')
+  return gulp
+    .src('src/runner.js')
     .pipe(mocha())
-    .on('error', (err) => {
+    .on('error', err => {
       console.log(err);
       selenium.child.kill();
     })
-    .once('end', () => { selenium.child.kill(); });
+    .once('end', () => {
+      selenium.child.kill();
+    });
 }
 
 function test() {
@@ -34,9 +41,10 @@ function test() {
   app.use(express.static(path.resolve(__dirname, 'test/test-pages')));
   const server = app.listen(3000);
 
-  return gulp.src('test/*.spec.js')
+  return gulp
+    .src('test/*.spec.js')
     .pipe(mocha())
-    .on('error', (err) => {
+    .on('error', err => {
       console.log(err);
       selenium.child.kill();
     })

@@ -9,7 +9,7 @@ const user = {
 };
 
 describe('buildMessage', () => {
-  it('.attachments should has 2 items when shelf doesn\'t have alert items', () => {
+  it(".attachments should has 2 items when shelf doesn't have alert items", () => {
     const shelf = {
       onLoan: [{ alert: false, text: 'abc' }],
       hold: [{ alert: false, text: 'def' }],

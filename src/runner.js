@@ -25,7 +25,9 @@ describe('opac page', function runner() {
       await d.getUrl();
       await d.login();
       await d.toStatusPage();
-      await d.getShelf().then((s) => { shelf = s; });
+      await d.getShelf().then(s => {
+        shelf = s;
+      });
       await d.logout();
     });
 
@@ -42,7 +44,7 @@ describe('opac page', function runner() {
       }
 
       if (message === errorMessage || message.attachments.length > 2) {
-        await webhook.send(message).then((res) => {
+        await webhook.send(message).then(res => {
           expect(res).to.not.be.null;
         });
       }
