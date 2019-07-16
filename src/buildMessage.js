@@ -9,7 +9,8 @@ function buildAttachments(shelf, type, obj) {
             text: `${atta.warning.text}${book.text}\n`,
           },
         };
-      } else if (type === 'hold') {
+      }
+      if (type === 'hold') {
         return {
           ...atta,
           notice: {

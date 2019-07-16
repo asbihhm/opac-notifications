@@ -34,8 +34,7 @@ async function onLoan(detail) {
   let index = { d: 2, p: 3, t: 4, s: 5 };
   if (detail.length > 6) index = { d: 3, p: 4, t: 5, s: 6 };
 
-  const loanDateAndPlace =
-        await detail[index.d].getText().then(t => t.toString());
+  const loanDateAndPlace = await detail[index.d].getText().then(t => t.toString());
   const loanDate = loanDateAndPlace.split('\n')[0];
   const period = await detail[index.p].getText().then(t => t.toString());
   const title = await detail[index.t].getText().then(t => t.toString());
@@ -54,8 +53,7 @@ async function hold(detail) {
   let index = { d: 2, s: 3, t: 4 };
   if (detail.length > 7) index = { d: 3, s: 4, t: 5 };
 
-  const holdDateAndDueDate =
-        await detail[index.d].getText().then(t => t.toString());
+  const holdDateAndDueDate = await detail[index.d].getText().then(t => t.toString());
   const [holdDate, dueDate] = holdDateAndDueDate.split('\n');
   const statusAndRank = await detail[index.s].getText().then(t => t.toString());
   const [status, rank] = statusAndRank.split('\n');
