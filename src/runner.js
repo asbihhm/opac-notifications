@@ -1,53 +1,40 @@
-/* eslint-disable no-unused-expressions */
+/* eslint-disable no-console */
 
-const { expect } = require('chai');
 const { IncomingWebhook } = require('@slack/client');
 const OPACDriver = require('./OPACDriver.js');
 const buildMessage = require('./buildMessage.js');
+
 const Config = require('../Config.js');
 
-describe('opac page', function runner() {
-  this.timeout(150000);
+const webhook = new IncomingWebhook(Config.slack.url);
+const errorMessage = 'error occurred';
 
-  const webhook = new IncomingWebhook(Config.slack.url);
-  const errorMessage = 'error occurred';
+async function runner(user, idx) {
+  let shelf;
+  const d = new OPACDriver(user);
 
-  Config.users.forEach((user, idx) => {
-    let shelf;
-    const d = new OPACDriver(user);
-    const userName = user.name || idx;
+  console.log(`Start: ${user.name || idx}`);
 
-    it(`build driver: ${userName}`, async () => {
-      await d.build();
-    });
-
-    it(`get status: ${userName}`, async () => {
-      await d.getUrl();
-      await d.login();
-      await d.toStatusPage();
-      await d.getShelf().then(s => {
-        shelf = s;
-      });
-      await d.logout();
-    });
-
-    it(`quit driver: ${userName}`, async () => {
-      await d.quit();
-    });
-
-    it(`send to slack: ${userName}`, async () => {
-      const message = shelf ? buildMessage(shelf, user) : errorMessage;
-
-      if (process.env.NODE_ENV === 'development') {
-        console.log(message); // eslint-disable-line no-console
-        return;
-      }
-
-      if (message === errorMessage || message.attachments.length > 2) {
-        await webhook.send(message).then(res => {
-          expect(res).to.not.be.null;
-        });
-      }
-    });
+  await d.build();
+  await d.getUrl();
+  await d.login();
+  await d.toStatusPage();
+  await d.getShelf().then((s) => {
+    shelf = s;
   });
-});
+  await d.logout();
+  await d.quit();
+
+  const message = shelf ? buildMessage(shelf, user) : errorMessage;
+  if (process.env.NODE_ENV === 'development') {
+    console.log(message);
+    return;
+  }
+  await webhook.send(message);
+}
+
+(async () => {
+  await Promise.all(
+    Config.users.map((user, idx) => runner(user, idx)),
+  );
+})();
