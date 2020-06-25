@@ -10,8 +10,8 @@ promise.USE_PROMISE_MANAGER = false;
 const chromeOptions = new chrome.Options();
 chromeOptions.addArguments(
   process.env.NODE_ENV === 'development'
-    ? ['lang=en', 'window-size=1920,1080']
-    : ['headless', 'lang=en', 'window-size=1920,1080'],
+    ? ['window-size=1920,1080']
+    : ['headless', 'window-size=1920,1080'],
 );
 chromeOptions.setUserPreferences({
   credentials_enable_service: false,
