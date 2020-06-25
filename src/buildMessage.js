@@ -41,10 +41,10 @@ function toArrayAttachments(obj) {
   }
 
   /* eslint-disable no-param-reassign */
-  if (obj.onLoan.text !== '') {
+  if (obj.onLoan.text == '') {
     obj.onLoan.text = 'Empty';
   }
-  if (obj.hold.text !== '') {
+  if (obj.hold.text == '') {
     obj.hold.text = 'Empty';
   }
   /* eslint-enable no-param-reassign */
