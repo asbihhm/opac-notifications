@@ -31,13 +31,27 @@ function buildAttachments(shelf, type, obj) {
 }
 
 function toArrayAttachments(obj) {
-  const attachments = [obj.onLoan, obj.hold];
+  const attachments = [];
+
   if (obj.notice.text !== '') {
-    attachments.unshift(obj.notice);
+    attachments.push(obj.notice);
   }
   if (obj.warning.text !== '') {
-    attachments.unshift(obj.warning);
+    attachments.push(obj.warning);
   }
+
+  /* eslint-disable no-param-reassign */
+  if (obj.onLoan.text !== '') {
+    obj.onLoan.text = 'Empty';
+  }
+  if (obj.hold.text !== '') {
+    obj.hold.text = 'Empty';
+  }
+  /* eslint-enable no-param-reassign */
+
+  attachments.push(obj.onLoan);
+  attachments.push(obj.hold);
+
   return attachments;
 }
 
