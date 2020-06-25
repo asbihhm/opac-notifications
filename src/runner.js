@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-const { IncomingWebhook } = require('@slack/client');
+const { IncomingWebhook } = require('@slack/webhook');
 const OPACDriver = require('./OPACDriver.js');
 const buildMessage = require('./buildMessage.js');
 
@@ -34,7 +34,5 @@ async function runner(user, idx) {
 }
 
 (async () => {
-  await Promise.all(
-    Config.users.map((user, idx) => runner(user, idx)),
-  );
+  await Promise.all(Config.users.map((user, idx) => runner(user, idx)));
 })();

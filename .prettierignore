@@ -1,6 +1,12 @@
 .tern-port
 .gitignore
-yarn.lock
+.prettierignore
+.editorconfig
+.envrc
 README.md
+Config.js
 package.json
+package-lock.json
 node_modules/
+*.nix
+nix/

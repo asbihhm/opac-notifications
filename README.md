@@ -1,8 +1,8 @@
 # opac notifications
 Send the status of Matsuyama OPAC to a channel in [Slack](https://slack.com).
 
-## usage
-1. touch Config.js
+## Run
+1. Create `./Config.js`
 ```javascript
 module.exports = {
   slack: {
@@ -19,8 +19,15 @@ module.exports = {
 };
 ```
 
-2. run
-```bash
-yarn install
-yarn start
+2. Run
+```sh
+selenium-server &
+npm run start
+```
+
+## Test
+```sh
+selenium-server &
+python -m http.server -d test/test-pages/ 3000 &
+npm run test
 ```

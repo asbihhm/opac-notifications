@@ -24,7 +24,7 @@ async function books(elem, f) {
   return Promise.all(
     trs
       .slice(1) // remove thead/tr
-      .map(tr => tr.findElements(By.tagName('td')).then(f)),
+      .map((tr) => tr.findElements(By.tagName('td')).then(f)),
   );
 }
 
@@ -36,11 +36,11 @@ async function onLoan(detail) {
 
   const loanDateAndPlace = await detail[index.d]
     .getText()
-    .then(t => t.toString());
+    .then((t) => t.toString());
   const loanDate = loanDateAndPlace.split('\n')[0];
-  const period = await detail[index.p].getText().then(t => t.toString());
-  const title = await detail[index.t].getText().then(t => t.toString());
-  const status = await detail[index.s].getText().then(t => t.toString());
+  const period = await detail[index.p].getText().then((t) => t.toString());
+  const title = await detail[index.t].getText().then((t) => t.toString());
+  const status = await detail[index.s].getText().then((t) => t.toString());
   const periodDate = new Date(period);
   return {
     alert: periodDate.getTime() <= Date.now() + 86400000,
@@ -59,11 +59,13 @@ async function hold(detail) {
 
   const holdDateAndDueDate = await detail[index.d]
     .getText()
-    .then(t => t.toString());
+    .then((t) => t.toString());
   const [holdDate, dueDate] = holdDateAndDueDate.split('\n');
-  const statusAndRank = await detail[index.s].getText().then(t => t.toString());
+  const statusAndRank = await detail[index.s]
+    .getText()
+    .then((t) => t.toString());
   const [status, rank] = statusAndRank.split('\n');
-  const title = await detail[index.t].getText().then(t => t.toString());
+  const title = await detail[index.t].getText().then((t) => t.toString());
   return {
     alert: status === 'Receivable',
     text: `*${title}*\n${rank},    _${status}_   ${holdDate}〜${dueDate || ''}`,
@@ -125,13 +127,13 @@ class OPACDriver {
         ),
         10000,
       )
-      .then(elem =>
+      .then((elem) =>
         Promise.all([
           books(elem.findElement(By.name('EXTEND_F')), onLoan),
           books(elem.findElement(By.name('DELETE')), hold),
         ]),
       )
-      .then(arr => ({ onLoan: arr[0], hold: arr[1] }));
+      .then((arr) => ({ onLoan: arr[0], hold: arr[1] }));
   }
 }
 
