@@ -3,3 +3,4 @@
 node_modules/
 *.log
 Config.js
+.dir-locals.el
