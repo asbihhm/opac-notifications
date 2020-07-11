@@ -1,4 +1,7 @@
 module.exports = {
+  parserOptions: {
+    ecmaVersion: 2020,
+  },
   extends: ['airbnb-base', 'prettier'],
   env: {
     mocha: true,
