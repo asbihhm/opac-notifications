@@ -6,14 +6,14 @@ Send the status of Matsuyama OPAC to a channel in [Slack](https://slack.com).
 ```json
 {
   "slack": {
-    "url": "", // Incoming Webhook URL
+    "url": "Incoming Webhook URL"
   },
   "users": [
     {
-      "id": "",     // OPAC ID
-      "pass": "",   // OPAC Password
-      "name": "",   // optional: use in test title
-      "slackId": "" // optional: use in slack text
+      "id": "OPAC ID",
+      "pass": "OPAC Password",
+      "name": "optional",
+      "slackId": "optional"
     }
   ]
 }
