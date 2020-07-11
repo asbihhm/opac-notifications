@@ -2,21 +2,21 @@
 Send the status of Matsuyama OPAC to a channel in [Slack](https://slack.com).
 
 ## Run
-1. Create `./Config.js`
-```javascript
-module.exports = {
-  slack: {
-    url: '', // Incoming Webhook URL
+1. Create `${XDG_CONFIG_HOME}/opac-notifications/config.json`
+```json
+{
+  "slack": {
+    "url": "", // Incoming Webhook URL
   },
-  users: [
+  "users": [
     {
-      id: '',      // OPAC ID
-      pass: '',    // OPAC Password
-      name: '',    // optional: use in test title
-      slackId: '', // optional: use in slack text
-    },
-  ],
-};
+      "id": "",     // OPAC ID
+      "pass": "",   // OPAC Password
+      "name": "",   // optional: use in test title
+      "slackId": "" // optional: use in slack text
+    }
+  ]
+}
 ```
 
 2. Run

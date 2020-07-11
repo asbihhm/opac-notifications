@@ -68,9 +68,9 @@ fs.readFile(configPath, async (err, configRaw) => {
   };
 
   await users.reduce((past, user, idx) => {
-    if (!user.id || !user.pass || !user.slackId) {
+    if (!user.id || !user.pass) {
       console.error(
-        `Missing 'users[${idx}].id', 'users[${idx}].pass' or 'users[${idx}].slackId', Skip`,
+        `Missing 'users[${idx}].id' or 'users[${idx}].pass', Skip`,
       );
       return Promise.resolve();
     }
