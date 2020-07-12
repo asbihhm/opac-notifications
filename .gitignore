@@ -1,6 +1,9 @@
 .tern-port
 .tern-project
+.dir-locals.el
 node_modules/
 *.log
 Config.js
-.dir-locals.el
+result
+result-2
+result-3

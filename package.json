@@ -5,9 +5,12 @@
   "author": "asbish",
   "license": "MIT",
   "private": true,
+  "bin": {
+    "opac-notifications": "bin/opac-notifications"
+  },
   "scripts": {
-    "start": "node src/runner.js",
-    "dev": "NODE_ENV=development node src/runner.js",
+    "start": "./bin/opac-notifications",
+    "dev": "NODE_ENV=development ./bin/opac-notifications",
     "test": "mocha \"test/*.spec.js\"",
     "lint": "eslint \"{src,test}/**/*.js\" && prettier --check **/*",
     "lint:fix": "prettier --write '**/*'"
