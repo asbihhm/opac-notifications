@@ -59,12 +59,17 @@ exports.run = () => {
       await d.quit();
 
       const message = shelf ? buildMessage(shelf, user) : 'error occurred';
+      const willSend = message.attachments.length !== 0;
+
       if (process.env.NODE_ENV === 'development') {
-        console.log(`Result(${user.name || idx}):`);
+        console.log(`[${user.name || idx}](willSend: ${willSend}):`);
         console.log(message);
         return;
       }
-      await webhook.send(message);
+
+      if (willSend) {
+        await webhook.send(message);
+      }
     };
 
     await users.reduce((past, user, idx) => {

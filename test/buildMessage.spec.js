@@ -17,6 +17,15 @@ describe('buildMessage', () => {
     expect(buildMessage(shelf, user).attachments.length).to.equal(2);
   });
 
+  it(".attachments should be an empty array when shelf doesn't have any items", () => {
+    const shelf = {
+      onLoan: [],
+      hold: [],
+    };
+    const { attachments } = buildMessage(shelf, user);
+    expect(attachments.length).to.equal(0);
+  });
+
   it('.attachments WARNING should exist when shelf.onLoan has alert items', () => {
     const shelf = {
       onLoan: [{ alert: true, text: 'abc' }],
@@ -27,7 +36,7 @@ describe('buildMessage', () => {
     expect(attachments[0].title).to.equal('WARNING');
     expect(attachments[0].text).includes('abc');
     expect(attachments[1].title).to.equal('ON LOAN');
-    expect(attachments[1].text).to.equal('Empty');
+    expect(attachments[1].text).to.equal('');
     expect(attachments[2].title).to.equal('HOLD');
     expect(attachments[2].text).includes('def');
   });
@@ -44,6 +53,6 @@ describe('buildMessage', () => {
     expect(attachments[1].title).to.equal('ON LOAN');
     expect(attachments[1].text).includes('abc');
     expect(attachments[2].title).to.equal('HOLD');
-    expect(attachments[2].text).to.equal('Empty');
+    expect(attachments[2].text).to.equal('');
   });
 });

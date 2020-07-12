@@ -40,17 +40,16 @@ function toArrayAttachments(obj) {
     attachments.push(obj.warning);
   }
 
-  /* eslint-disable no-param-reassign */
-  if (obj.onLoan.text === '') {
-    obj.onLoan.text = 'Empty';
+  if (
+    !(
+      attachments.length === 0 &&
+      obj.onLoan.text === '' &&
+      obj.hold.text === ''
+    )
+  ) {
+    attachments.push(obj.onLoan);
+    attachments.push(obj.hold);
   }
-  if (obj.hold.text === '') {
-    obj.hold.text = 'Empty';
-  }
-  /* eslint-enable no-param-reassign */
-
-  attachments.push(obj.onLoan);
-  attachments.push(obj.hold);
 
   return attachments;
 }
