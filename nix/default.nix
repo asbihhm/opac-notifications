@@ -32,9 +32,9 @@ in
 {
   inherit pkgs;
   nodePackages = nodePackages // {
-    tarball = nodePackages.package.override { inherit src; };
+    tarball = nodePackages.tarball.override { inherit src; };
     package = nodePackages.package.override { inherit src buildInputs; };
-    shell = nodePackages.package.override {
+    shell = nodePackages.shell.override {
       inherit buildInputs;
       dontNpmInstall = true;
     };
