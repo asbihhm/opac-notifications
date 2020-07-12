@@ -314,7 +314,7 @@ let
   args = {
     name = "opac-notifications";
     packageName = "opac-notifications";
-    version = "0.6.1";
+    version = "0.6.2";
     src = ./..;
     dependencies = [
       sources."@slack/types-1.7.0"
