@@ -1,8 +1,9 @@
 # opac notifications
+
 Send the status of Matsuyama OPAC to a channel in [Slack](https://slack.com).
 
-## Run
-1. Create `${XDG_CONFIG_HOME}/opac-notifications/config.json`
+Create `${XDG_CONFIG_HOME}/opac-notifications/config.json`
+
 ```json
 {
   "slack": {
@@ -19,14 +20,27 @@ Send the status of Matsuyama OPAC to a channel in [Slack](https://slack.com).
 }
 ```
 
-2. Run
+## Run
+
 ```sh
+nix-shell
 selenium-server &
-npm run start
+./bin/opac-notifications
+```
+
+or
+
+```sh
+nix-env -f '<nixpkgs>' -iA selenium-server-standalone chromedriver chromium #(or google-chrome)
+nix-env -f . -iA package
+selenium-server &
+opac-notifications
 ```
 
 ## Test
+
 ```sh
+nix-shell
 selenium-server &
 python -m http.server -d test/test-pages/ 3000 &
 npm run test

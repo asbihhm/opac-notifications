@@ -22,21 +22,19 @@ let
     src = sourceDir;
     filter = path: type: gitIgnored path type && srcIgnored path;
   };
-
-  buildInputs = with pkgs; [
-    selenium-server-standalone
-    chromedriver
-    chromium
-  ];
 in
 {
   inherit pkgs;
   nodePackages = nodePackages // {
     tarball = nodePackages.tarball.override { inherit src; };
-    package = nodePackages.package.override { inherit src buildInputs; };
-    shell = nodePackages.shell.override {
-      inherit buildInputs;
+    package = nodePackages.package.override { inherit src; };
+    shell = nodePackages.shell.override(oldAttrs: {
       dontNpmInstall = true;
-    };
+      buildInputs = oldAttrs.buildInputs ++ [
+        pkgs.selenium-server-standalone
+        pkgs.chromedriver
+        pkgs.chromium
+      ];
+    });
   };
 }
