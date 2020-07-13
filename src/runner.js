@@ -42,6 +42,11 @@ exports.run = () => {
       throw new Error("Invalid type of 'users'");
     }
 
+    if (users.length === 0) {
+      console.log("Empty 'users', exit immediately");
+      return;
+    }
+
     const webhook = new IncomingWebhook(slackURL);
 
     const runDriver = async (user, idx) => {
