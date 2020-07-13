@@ -9,8 +9,7 @@
     "opac-notifications": "bin/opac-notifications"
   },
   "scripts": {
-    "start": "./bin/opac-notifications",
-    "dev": "NODE_ENV=development ./bin/opac-notifications",
+    "start": "NODE_ENV=development ./bin/opac-notifications",
     "test": "mocha \"test/*.spec.js\"",
     "lint": "eslint \"{src,test}/**/*.js\" && prettier --check {src,test}/**/*",
     "lint:fix": "prettier --write '{src,test}/**/*'"
