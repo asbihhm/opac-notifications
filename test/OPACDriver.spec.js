@@ -10,6 +10,12 @@ const user = {
 };
 
 describe('getShelf', () => {
+  const options = {
+    headless: true,
+    driverBin: process.env.OPAC_DRIVER_BIN,
+    chromeBin: process.env.OPAC_CHROME_BIN,
+  };
+
   describe('onLoan', function () {
     this.timeout(150000);
 
@@ -17,11 +23,9 @@ describe('getShelf', () => {
     let clock;
 
     beforeEach(async () => {
-      d = new OPACDriver(user, {
-        url: 'http://localhost:3000/on-loan.html',
-      });
-      await d.build();
-      await d.getUrl();
+      d = new OPACDriver(user);
+      await d.build(options);
+      await d.getUrl('http://localhost:3000/on-loan.html');
       clock = sinon.useFakeTimers(new Date('2018-01-10'));
     });
 
@@ -43,11 +47,9 @@ describe('getShelf', () => {
     let d;
 
     beforeEach(async () => {
-      d = new OPACDriver(user, {
-        url: 'http://localhost:3000/hold.html',
-      });
-      await d.build();
-      await d.getUrl();
+      d = new OPACDriver(user);
+      await d.build(options);
+      await d.getUrl('http://localhost:3000/hold.html');
     });
 
     afterEach(async () => {
@@ -68,11 +70,9 @@ describe('getShelf', () => {
     let clock;
 
     beforeEach(async () => {
-      d = new OPACDriver(user, {
-        url: 'http://localhost:3000/on-loan-and-hold.html',
-      });
-      await d.build();
-      await d.getUrl();
+      d = new OPACDriver(user);
+      await d.build(options);
+      await d.getUrl('http://localhost:3000/on-loan-and-hold.html');
       clock = sinon.useFakeTimers(new Date('2018-01-18'));
     });
 

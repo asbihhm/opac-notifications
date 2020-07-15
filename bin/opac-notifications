@@ -2,4 +2,21 @@
 
 'use strict';
 
-require('../src/runner').run();
+const argv = process.argv.slice(2);
+
+if (argv.includes('--help')) {
+  console.log('Usage: ');
+  // prettier-ignore
+  console.log('  --preventWebhook  log the result to STDOUT instead of sending to Slack;');
+  console.log('  --headless        use headless-chrome;');
+  return;
+}
+
+const options = {
+  preventWebhook: argv.includes('--preventWebhook'),
+  headless: argv.includes('--headless'),
+  driverBin: process.env.OPAC_DRIVER_BIN,
+  chromeBin: process.env.OPAC_CHROME_BIN,
+};
+
+require('../src/runner').run(options);

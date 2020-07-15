@@ -7,18 +7,6 @@ const chrome = require('selenium-webdriver/chrome');
 
 promise.USE_PROMISE_MANAGER = false;
 
-const chromeOptions = new chrome.Options();
-chromeOptions.addArguments(
-  process.env.NODE_ENV === 'development'
-    ? ['window-size=1920,1080']
-    : ['headless', 'window-size=1920,1080'],
-);
-chromeOptions.setUserPreferences({
-  credentials_enable_service: false,
-  'profile.password_manager_enabled': false,
-  'intl.accept_languages': 'en-US',
-});
-
 async function books(elem, f) {
   const trs = await elem.findElements(By.tagName('tr'));
   return Promise.all(
@@ -73,29 +61,50 @@ async function hold(detail) {
 }
 
 class OPACDriver {
-  constructor(user, { url } = {}) {
+  constructor(user) {
     this.id = user.id;
     this.pass = user.pass;
-    this.url = url || 'https://www.tosyokan.city.matsuyama.ehime.jp/opac/';
   }
 
-  async build() {
-    this.driver = await new Builder()
+  async build({ headless, chromeBin, driverBin } = {}) {
+    const chromeOptions = new chrome.Options();
+
+    if (headless) chromeOptions.headless();
+    if (chromeBin) chromeOptions.setChromeBinaryPath(chromeBin);
+
+    chromeOptions.windowSize({ width: 1920, height: 1080 }).setUserPreferences({
+      credentials_enable_service: false,
+      'profile.password_manager_enabled': false,
+      'intl.accept_languages': 'en-US',
+    });
+
+    const builder = new Builder()
       .forBrowser('chrome')
-      .setChromeOptions(chromeOptions)
+      // TODO: Select server port from options
       .usingServer('http://localhost:4444/wd/hub')
-      .build();
+      .setChromeOptions(chromeOptions);
+
+    if (driverBin) {
+      builder.setChromeService(new chrome.ServiceBuilder(driverBin));
+    }
+
+    this.driver = await builder.build();
   }
 
-  async getUrl() {
-    await this.driver.get(this.url);
+  async getUrl(url) {
+    if (!this.driver) return;
+    await this.driver.get(
+      url || 'https://www.tosyokan.city.matsuyama.ehime.jp/opac/',
+    );
   }
 
   async quit() {
+    if (!this.driver) return;
     await this.driver.quit();
   }
 
   async login() {
+    if (!this.driver) return;
     await this.driver.findElement(By.name('USERID')).sendKeys(this.id);
     await this.driver.findElement(By.name('PASSWORD')).sendKeys(this.pass);
     await this.driver.findElement(By.xpath('//*[@id="loginbtn"]')).click();
@@ -106,6 +115,7 @@ class OPACDriver {
   }
 
   async logout() {
+    if (!this.driver) return;
     await this.driver.findElement(By.xpath('//*[@id="logoutbtn"]')).click();
     await this.driver.wait(
       until.elementLocated(By.xpath('//*[@id="loginbtn"]')),
@@ -113,13 +123,15 @@ class OPACDriver {
     );
   }
 
-  async toStatusPage() {
+  async goToStatusPage() {
+    if (!this.driver) return;
     await this.driver
       .findElement(By.xpath('//*[@id="nav_target"]/div[3]/a[6]'))
       .click();
   }
 
   async getShelf() {
+    if (!this.driver) return null;
     return this.driver
       .wait(
         until.elementLocated(

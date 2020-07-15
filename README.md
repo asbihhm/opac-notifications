@@ -24,18 +24,23 @@ Create `${XDG_CONFIG_HOME}/opac-notifications/config.json`
 
 ```sh
 nix-shell
+npm install
 selenium-server &
-./bin/opac-notifications
+npm run start
 ```
 
 or
 
 ```sh
-nix-env -f '<nixpkgs>' -iA selenium-server-standalone chromedriver chromium #(or google-chrome)
 nix-env -f . -iA package
-selenium-server &
+opac-selenium-server &
 opac-notifications
 ```
+
+Note:
+
+- `opac-selenium-server` is alias for `selenium-server`
+- Chromium browser requires `/etc/fonts/fonts.conf`
 
 ## Test
 

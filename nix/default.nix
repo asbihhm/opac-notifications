@@ -22,19 +22,38 @@ let
     src = sourceDir;
     filter = path: type: gitIgnored path type && srcIgnored path;
   };
+
+  buildInputs = with pkgs; [
+    selenium-server-standalone
+    chromedriver
+    chromium
+  ];
+
+  opacServerBin = "${pkgs.selenium-server-standalone}/bin/selenium-server";
+  opacDriverBin = "${pkgs.chromedriver}/bin/chromedriver";
+  opacChromeBin = "${pkgs.chromium}/bin/chromium";
 in
 {
   inherit pkgs;
   nodePackages = nodePackages // {
     tarball = nodePackages.tarball.override { inherit src; };
-    package = nodePackages.package.override { inherit src; };
-    shell = nodePackages.shell.override(oldAttrs: {
-      dontNpmInstall = true;
-      buildInputs = oldAttrs.buildInputs ++ [
-        pkgs.selenium-server-standalone
-        pkgs.chromedriver
-        pkgs.chromium
-      ];
+    package = nodePackages.package.override(oldAttrs: {
+      inherit src;
+      buildInputs = oldAttrs.buildInputs ++ buildInputs;
+      preRebuild = ''
+        substituteInPlace bin/opac-notifications \
+          --replace process.env.OPAC_DRIVER_BIN \'${opacDriverBin}\' \
+          --replace process.env.OPAC_CHROME_BIN \'${opacChromeBin}\'
+      '';
+      postInstall = ''
+        ln -s ${opacServerBin} $out/bin/opac-selenium-server
+      '';
     });
+    shell = pkgs.mkShell {
+      name = nodePackages.shell.name;
+      buildInputs = nodePackages.shell.buildInputs ++ buildInputs;
+      OPAC_DRIVER_BIN = opacDriverBin;
+      OPAC_CHROME_BIN = opacChromeBin;
+    };
   };
 }

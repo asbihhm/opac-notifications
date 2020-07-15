@@ -54,8 +54,7 @@ function toArrayAttachments(obj) {
   return attachments;
 }
 
-function buildMessage(shelf, user) {
-  const slackId = user.slackId ? `<@${user.slackId}>` : '';
+function buildMessage(shelf, { slackId, name }) {
   const onLoan = buildAttachments.bind(null, shelf, 'onLoan');
   const hold = buildAttachments.bind(null, shelf, 'hold');
   const attachments = toArrayAttachments(
@@ -92,8 +91,10 @@ function buildMessage(shelf, user) {
       }),
     ),
   );
+
+  const t = 'In Your bookbag!';
   return {
-    text: `${slackId} In your bookbag!`,
+    text: slackId ? `<@${slackId}> ${t}` : name ? `${name}, ${t}` : t,
     attachments,
   };
 }

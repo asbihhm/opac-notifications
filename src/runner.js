@@ -7,84 +7,95 @@ const { IncomingWebhook } = require('@slack/webhook');
 const OPACDriver = require('./OPACDriver.js');
 const buildMessage = require('./buildMessage.js');
 
-exports.run = () => {
+exports.run = (options = {}) => {
   let configHomePath = process.env.XDG_CONFIG_HOME;
   if (!configHomePath) {
     const homedir = os.homedir();
-    if (!homedir) throw new Error("Couldn't locate a home directory");
-
+    if (!homedir) throw new Error("Couldn't locate home directory");
     configHomePath = path.join(homedir, '.config');
   }
 
-  const configPath = path.join(
-    configHomePath,
-    'opac-notifications',
-    'config.json',
-  );
+  fs.readFile(
+    path.join(configHomePath, 'opac-notifications', 'config.json'),
+    async (readFileErr, configRaw) => {
+      if (readFileErr) {
+        if (readFileErr.code === 'ENOENT') {
+          console.log("Couldn't locate the configuration file");
+          return;
+        }
+        throw readFileErr;
+      }
 
-  fs.readFile(configPath, async (err, configRaw) => {
-    if (err) throw err;
+      let config;
+      try {
+        config = JSON.parse(configRaw);
+      } catch (err) {
+        throw new Error('Failed to parse the configuration file');
+      }
 
-    let config;
-    try {
-      config = JSON.parse(configRaw);
-    } catch (e) {
-      throw new Error(`Failed to parse ${configPath}`);
-    }
+      const slackURL = config.slack?.url;
+      if (!slackURL) {
+        throw new Error("Missing 'slack.url'");
+      }
 
-    const slackURL = config.slack?.url;
-    if (!slackURL) {
-      throw new Error("Missing 'slack.url'");
-    }
+      const { users } = config;
+      if (!Array.isArray(users)) {
+        throw new Error("Invalid type of 'users'");
+      }
 
-    const { users } = config;
-    if (!Array.isArray(users)) {
-      throw new Error("Invalid type of 'users'");
-    }
-
-    if (users.length === 0) {
-      console.log("Empty 'users', exit immediately");
-      return;
-    }
-
-    const webhook = new IncomingWebhook(slackURL);
-
-    const runDriver = async (user, idx) => {
-      let shelf;
-
-      const d = new OPACDriver(user);
-      await d.build();
-      await d.getUrl();
-      await d.login();
-      await d.toStatusPage();
-      await d.getShelf().then((s) => {
-        shelf = s;
-      });
-      await d.logout();
-      await d.quit();
-
-      const message = shelf ? buildMessage(shelf, user) : 'error occurred';
-      const willSend = message.attachments.length !== 0;
-
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`[${user.name || idx}](willSend: ${willSend}):`);
-        console.log(message);
+      if (users.length === 0) {
+        console.log("Empty 'users', exit immediately");
         return;
       }
 
-      if (willSend) {
-        await webhook.send(message);
-      }
-    };
+      const webhook = new IncomingWebhook(slackURL);
 
-    await users.reduce((past, user, idx) => {
-      if (!user.id || !user.pass) {
-        console.error(
-          `Missing 'users[${idx}].id' or 'users[${idx}].pass', Skip`,
-        );
-        return Promise.resolve();
-      }
-      return past.then(() => runDriver(user, idx));
-    }, Promise.resolve());
-  });
+      const runDriver = async (user, idx) => {
+        const d = new OPACDriver(user);
+        await d.build(options);
+        await d.getUrl();
+        await d.login();
+        await d.goToStatusPage();
+        const shelf = await d.getShelf();
+        await d.logout();
+        await d.quit();
+
+        if (!shelf) {
+          throw new Error("Couldn't get OPAC data");
+        }
+
+        const message = buildMessage(shelf, user);
+
+        // TODO: Check differences betweeen this message and the past one.
+        const willSend = message.attachments.length !== 0;
+
+        if (options.preventWebhook) {
+          message.preventWebhookMetadata = {
+            name: user.name || `users[${idx}]`,
+            willSend,
+          };
+          console.log(message);
+          return;
+        }
+
+        if (willSend) {
+          await webhook.send(message);
+        }
+      };
+
+      await users.reduce((past, user, idx) => {
+        if (!user.id || !user.pass) {
+          console.log(`Missing 'id' or 'pass' in users[${idx}], skip!`);
+          return Promise.resolve();
+        }
+
+        return past
+          .then(() => runDriver(user, idx))
+          .catch((err) => {
+            console.error(err);
+            process.exit(1);
+          });
+      }, Promise.resolve());
+    },
+  );
 };
