@@ -32,7 +32,7 @@ npm run start
 or
 
 ```sh
-nix-env -f . -iA package
+nix-env -f . -iA nodePackages.package
 opac-selenium-server &
 opac-notifications
 ```
@@ -46,6 +46,7 @@ Note:
 
 ```sh
 nix-shell
+npm install
 selenium-server &
 python -m http.server -d test/test-pages/ 3000 &
 npm run test

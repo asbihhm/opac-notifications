@@ -5,7 +5,8 @@
 const argv = process.argv.slice(2);
 
 if (argv.includes('--help')) {
-  console.log('Usage: ');
+  console.log('Usage: opac-notifications [options]');
+  console.log('Options: ');
   // prettier-ignore
   console.log('  --preventWebhook  log the result to STDOUT instead of sending to Slack;');
   console.log('  --headless        use headless-chrome;');
