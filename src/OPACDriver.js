@@ -66,7 +66,7 @@ class OPACDriver {
     this.pass = user.pass;
   }
 
-  async build({ headless, chromeBin, driverBin } = {}) {
+  async build({ headless, remoteURL, chromeBin, driverBin } = {}) {
     const chromeOptions = new chrome.Options();
 
     if (headless) chromeOptions.headless();
@@ -80,9 +80,9 @@ class OPACDriver {
 
     const builder = new Builder()
       .forBrowser('chrome')
-      // TODO: Select server port from options
-      .usingServer('http://localhost:4444/wd/hub')
       .setChromeOptions(chromeOptions);
+
+    if (remoteURL) builder.usingServer(remoteURL);
 
     if (driverBin) {
       builder.setChromeService(new chrome.ServiceBuilder(driverBin));

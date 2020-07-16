@@ -66,7 +66,7 @@ exports.run = (options = {}) => {
 
         const message = buildMessage(shelf, user);
 
-        // TODO: Check differences betweeen this message and the past one.
+        // TODO: Check the differences between this message and the past one.
         const willSend = message.attachments.length !== 0;
 
         if (options.preventWebhook) {

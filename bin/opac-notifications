@@ -16,6 +16,7 @@ if (argv.includes('--help')) {
 const options = {
   preventWebhook: argv.includes('--preventWebhook'),
   headless: argv.includes('--headless'),
+  remoteURL: process.env.OPAC_REMOTE_URL,
   driverBin: process.env.OPAC_DRIVER_BIN,
   chromeBin: process.env.OPAC_CHROME_BIN,
 };

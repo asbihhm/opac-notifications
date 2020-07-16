@@ -29,31 +29,37 @@ let
     chromium
   ];
 
-  opacServerBin = "${pkgs.selenium-server-standalone}/bin/selenium-server";
-  opacDriverBin = "${pkgs.chromedriver}/bin/chromedriver";
-  opacChromeBin = "${pkgs.chromium}/bin/chromium";
+  remoteURL = "http://localhost:4444/wd/hub";
+  driverBin = "${pkgs.chromedriver}/bin/chromedriver";
+  chromeBin = "${pkgs.chromium}/bin/chromium";
 in
 {
   inherit pkgs;
   nodePackages = nodePackages // {
     tarball = nodePackages.tarball.override { inherit src; };
-    package = nodePackages.package.override(oldAttrs: {
-      inherit src;
-      buildInputs = oldAttrs.buildInputs ++ buildInputs;
-      preRebuild = ''
-        substituteInPlace bin/opac-notifications \
-          --replace process.env.OPAC_DRIVER_BIN \'${opacDriverBin}\' \
-          --replace process.env.OPAC_CHROME_BIN \'${opacChromeBin}\'
-      '';
-      postInstall = ''
-        ln -s ${opacServerBin} $out/bin/opac-selenium-server
-      '';
-    });
+    package =
+      { opacRemoteURL ? remoteURL
+      , opacDriverBin ? driverBin
+      , opacChromeBin ? chromeBin
+      }: nodePackages.package.override(oldAttrs: {
+        inherit src;
+        buildInputs = oldAttrs.buildInputs ++ buildInputs;
+        preRebuild = ''
+          substituteInPlace bin/opac-notifications \
+            --replace process.env.OPAC_REMOTE_URL \'${opacRemoteURL}\' \
+            --replace process.env.OPAC_DRIVER_BIN \'${opacDriverBin}\' \
+            --replace process.env.OPAC_CHROME_BIN \'${opacChromeBin}\'
+        '';
+        postInstall = ''
+          ln -s ${pkgs.selenium-server-standalone}/bin/selenium-server $out/bin/opac-selenium-server
+        '';
+      });
     shell = pkgs.mkShell {
       name = nodePackages.shell.name;
       buildInputs = nodePackages.shell.buildInputs ++ buildInputs;
-      OPAC_DRIVER_BIN = opacDriverBin;
-      OPAC_CHROME_BIN = opacChromeBin;
+      OPAC_REMOTE_URL = remoteURL;
+      OPAC_DRIVER_BIN = driverBin;
+      OPAC_CHROME_BIN = chromeBin;
     };
   };
 }

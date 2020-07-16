@@ -12,6 +12,7 @@ const user = {
 describe('getShelf', () => {
   const options = {
     headless: true,
+    remoteURL: process.env.OPAC_REMOTE_URL,
     driverBin: process.env.OPAC_DRIVER_BIN,
     chromeBin: process.env.OPAC_CHROME_BIN,
   };

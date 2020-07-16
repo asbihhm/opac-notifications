@@ -9,7 +9,6 @@
     "opac-notifications": "bin/opac-notifications"
   },
   "scripts": {
-    "start": "./bin/opac-notifications --headless --preventWebhook",
     "test": "mocha \"test/*.spec.js\"",
     "lint": "eslint \"{src,test}/**/*.js\" && prettier --check {src,test}/**/*",
     "lint:fix": "prettier --write '{src,test}/**/*'"
