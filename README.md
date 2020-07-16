@@ -55,10 +55,10 @@ OPAC_CHROME_BIN=/nix/store/path/to/chromium \
 Build options:
 
 ```sh
-nix-build -A nodePackages.package
+nix-build -A nodePackages.package \
   --argstr opacRemoteURL http://localhost:4444/wd/hub \
-           opacDriverBin /nix/store/path/to/chromedriver \
-           opacChromeBin /nix/store/path/to/chromium
+  --argstr opacDriverBin /nix/store/path/to/chromedriver \
+  --argstr opacChromeBin /nix/store/path/to/chromium
 ```
 
 - `OPAC_REMOTE_URL`, `OPAC_DRIVER_BIN` and `OPAC_CHROME_BIN` are used for the same purpose of `opacRemoteURL`, `opacDriverBin` and `opacChromeBin`, respectively.
