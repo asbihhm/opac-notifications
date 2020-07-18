@@ -62,6 +62,14 @@ describe('getShelf', () => {
         expect(shelf.hold[0].alert).to.be.true;
       });
     });
+
+    it('.hold[0].text should includes appropriate information', async () => {
+      await d.getShelf().then((shelf) => {
+        expect(shelf.hold[0].text).equal(
+          "*Childhood's End*\n1,    _Receivable_   2018/11/01〜//",
+        );
+      });
+    });
   });
 
   describe('onLoan and hold', function () {

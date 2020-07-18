@@ -45,10 +45,11 @@ async function hold(detail) {
   let index = { d: 2, s: 3, t: 4 };
   if (detail.length > 7) index = { d: 3, s: 4, t: 5 };
 
-  const holdDateAndDueDate = await detail[index.d]
+  const dateColumn = await detail[index.d]
     .getText()
-    .then((t) => t.toString());
-  const [holdDate, dueDate] = holdDateAndDueDate.split('\n');
+    .then((t) => t.toString().split('\n'));
+  const holdDate = `${dateColumn[0]}${dateColumn[1]}`;
+  const dueDate = `${dateColumn[2] || ''}${dateColumn[3] || ''}`;
   const statusAndRank = await detail[index.s]
     .getText()
     .then((t) => t.toString());
@@ -56,7 +57,7 @@ async function hold(detail) {
   const title = await detail[index.t].getText().then((t) => t.toString());
   return {
     alert: status === 'Receivable',
-    text: `*${title}*\n${rank},    _${status}_   ${holdDate}〜${dueDate || ''}`,
+    text: `*${title}*\n${rank},    _${status}_   ${holdDate}〜${dueDate}`,
   };
 }
 
