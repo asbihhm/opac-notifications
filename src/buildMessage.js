@@ -40,14 +40,11 @@ function toArrayAttachments(obj) {
     attachments.push(obj.warning);
   }
 
-  if (
-    !(
-      attachments.length === 0 &&
-      obj.onLoan.text === '' &&
-      obj.hold.text === ''
-    )
-  ) {
+  if (!(attachments.length === 0 && obj.onLoan.text === '')) {
     attachments.push(obj.onLoan);
+  }
+
+  if (!(attachments.length === 0 && obj.hold.text === '')) {
     attachments.push(obj.hold);
   }
 
