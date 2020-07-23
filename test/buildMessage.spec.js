@@ -32,13 +32,11 @@ describe('buildMessage', () => {
       hold: [{ alert: false, text: 'def' }],
     };
     const { attachments } = buildMessage(shelf, user);
-    expect(attachments.length).to.equal(3);
+    expect(attachments.length).to.equal(2);
     expect(attachments[0].title).to.equal('WARNING');
     expect(attachments[0].text).includes('abc');
-    expect(attachments[1].title).to.equal('ON LOAN');
-    expect(attachments[1].text).to.equal('');
-    expect(attachments[2].title).to.equal('HOLD');
-    expect(attachments[2].text).includes('def');
+    expect(attachments[1].title).to.equal('HOLD');
+    expect(attachments[1].text).includes('def');
   });
 
   it('.attachments NOTICE should exist when shelf.hold has alert items', () => {
@@ -47,12 +45,10 @@ describe('buildMessage', () => {
       hold: [{ alert: true, text: 'def' }],
     };
     const { attachments } = buildMessage(shelf, user);
-    expect(attachments.length).to.equal(3);
+    expect(attachments.length).to.equal(2);
     expect(attachments[0].title).to.equal('NOTICE');
     expect(attachments[0].text).includes('def');
     expect(attachments[1].title).to.equal('ON LOAN');
     expect(attachments[1].text).includes('abc');
-    expect(attachments[2].title).to.equal('HOLD');
-    expect(attachments[2].text).to.equal('');
   });
 });

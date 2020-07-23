@@ -36,15 +36,16 @@ function toArrayAttachments(obj) {
   if (obj.notice.text !== '') {
     attachments.push(obj.notice);
   }
+
   if (obj.warning.text !== '') {
     attachments.push(obj.warning);
   }
 
-  if (!(attachments.length === 0 && obj.onLoan.text === '')) {
+  if (obj.onLoan.text !== '') {
     attachments.push(obj.onLoan);
   }
 
-  if (!(attachments.length === 0 && obj.hold.text === '')) {
+  if (obj.hold.text !== '') {
     attachments.push(obj.hold);
   }
 
