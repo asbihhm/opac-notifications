@@ -24,9 +24,12 @@ async function onLoan(detail) {
 
   const loanDateAndPlace = await detail[index.d]
     .getText()
-    .then((t) => t.toString());
-  const loanDate = loanDateAndPlace.split('\n')[0];
-  const period = await detail[index.p].getText().then((t) => t.toString());
+    .then((t) => t.toString().split('\n'));
+  const loanDate = `${loanDateAndPlace[0]}${loanDateAndPlace[1]}`;
+  const periodColumn = await detail[index.p]
+    .getText()
+    .then((t) => t.toString().split('\n'));
+  const period = `${periodColumn[0]}${periodColumn[1]}`;
   const title = await detail[index.t].getText().then((t) => t.toString());
   const status = await detail[index.s].getText().then((t) => t.toString());
   const periodDate = new Date(period);

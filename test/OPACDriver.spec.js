@@ -40,6 +40,14 @@ describe('getShelf', () => {
         expect(shelf.onLoan[0].alert).to.be.false;
       });
     });
+
+    it('.onLoan[0].text should includes appropriate information', async () => {
+      await d.getShelf().then((shelf) => {
+        expect(shelf.onLoan[0].text).equal(
+          "*Childhood's End*\n2017/12/25〜2018/01/15,   _On loan(renewal not available)_",
+        );
+      });
+    });
   });
 
   describe('hold', function () {
