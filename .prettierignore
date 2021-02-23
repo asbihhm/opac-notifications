@@ -3,7 +3,6 @@
 .prettierignore
 .editorconfig
 .envrc
-README.md
 Config.js
 package.json
 package-lock.json
