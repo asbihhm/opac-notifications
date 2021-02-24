@@ -4,40 +4,40 @@
 
 let
   sources = {
-    "@slack/types-1.7.0" = {
+    "@slack/types-1.10.0" = {
       name = "_at_slack_slash_types";
       packageName = "@slack/types";
-      version = "1.7.0";
+      version = "1.10.0";
       src = fetchurl {
-        url = "https://registry.npmjs.org/@slack/types/-/types-1.7.0.tgz";
-        sha512 = "aigLPmTO513JxeFyeII/74y+S5jU39tabDWPsZyMHJWCYqK3vCkRvV73NL+Ay+Tq5RC2NgSmkedk1wvQJ6oXLg==";
+        url = "https://registry.npmjs.org/@slack/types/-/types-1.10.0.tgz";
+        sha512 = "tA7GG7Tj479vojfV3AoxbckalA48aK6giGjNtgH6ihpLwTyHE3fIgRrvt8TWfLwW8X8dyu7vgmAsGLRG7hWWOg==";
       };
     };
-    "@slack/webhook-5.0.3" = {
+    "@slack/webhook-5.0.4" = {
       name = "_at_slack_slash_webhook";
       packageName = "@slack/webhook";
-      version = "5.0.3";
+      version = "5.0.4";
       src = fetchurl {
-        url = "https://registry.npmjs.org/@slack/webhook/-/webhook-5.0.3.tgz";
-        sha512 = "51vnejJ2zABNumPVukOLyerpHQT39/Lt0TYFtOEz/N2X77bPofOgfPj2atB3etaM07mxWHLT9IRJ4Zuqx38DkQ==";
+        url = "https://registry.npmjs.org/@slack/webhook/-/webhook-5.0.4.tgz";
+        sha512 = "IC1dpVSc2F/pmwCxOb0QzH2xnGKmyT7MofPGhNkeaoiMrLMU+Oc7xV/AxGnz40mURtCtaDchZSM3tDo9c9x6BA==";
       };
     };
-    "@types/node-14.0.13" = {
+    "@types/node-14.14.31" = {
       name = "_at_types_slash_node";
       packageName = "@types/node";
-      version = "14.0.13";
+      version = "14.14.31";
       src = fetchurl {
-        url = "https://registry.npmjs.org/@types/node/-/node-14.0.13.tgz";
-        sha512 = "rouEWBImiRaSJsVA+ITTFM6ZxibuAlTuNOCyxVbwreu6k6+ujs7DfnU9o+PShFhET78pMBl3eH+AGSI5eOTkPA==";
+        url = "https://registry.npmjs.org/@types/node/-/node-14.14.31.tgz";
+        sha512 = "vFHy/ezP5qI0rFgJ7aQnjDXwAMrG0KqqIH7tQG5PPv3BWBayOPIQNBjVc/P6hhdZfMx51REc6tfDNXHUio893g==";
       };
     };
-    "axios-0.19.2" = {
+    "axios-0.21.1" = {
       name = "axios";
       packageName = "axios";
-      version = "0.19.2";
+      version = "0.21.1";
       src = fetchurl {
-        url = "https://registry.npmjs.org/axios/-/axios-0.19.2.tgz";
-        sha512 = "fjgm5MvRHLhx+osE2xoekY70AhARk3a6hkN+3Io1jc00jtquGvxYlKlsFUhmUET0V5te6CcZI7lcv2Ym61mjHA==";
+        url = "https://registry.npmjs.org/axios/-/axios-0.21.1.tgz";
+        sha512 = "dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==";
       };
     };
     "balanced-match-1.0.0" = {
@@ -76,22 +76,13 @@ let
         sha1 = "b5fd54220aa2bc5ab57aab7140c940754503c1a7";
       };
     };
-    "debug-3.1.0" = {
-      name = "debug";
-      packageName = "debug";
-      version = "3.1.0";
-      src = fetchurl {
-        url = "https://registry.npmjs.org/debug/-/debug-3.1.0.tgz";
-        sha512 = "OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g==";
-      };
-    };
-    "follow-redirects-1.5.10" = {
+    "follow-redirects-1.13.2" = {
       name = "follow-redirects";
       packageName = "follow-redirects";
-      version = "1.5.10";
+      version = "1.13.2";
       src = fetchurl {
-        url = "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.5.10.tgz";
-        sha512 = "0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==";
+        url = "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.13.2.tgz";
+        sha512 = "6mPTgLxYm3r6Bkkg0vNM0HTjfGrOEtsfbhagQvbxDEsEkpNhw582upBaoRZylzen6krEmxXJgt9Ju6HiI4O7BA==";
       };
     };
     "fs.realpath-1.0.0" = {
@@ -173,15 +164,6 @@ let
       src = fetchurl {
         url = "https://registry.npmjs.org/minimatch/-/minimatch-3.0.4.tgz";
         sha512 = "yJHVQEhyqPLUTgt9B83PXu6W3rx4MvvHvSUvToogpwoGDOUQ+yDrR0HRot+yOCdCO7u4hX3pWft6kWBBcqh0UA==";
-      };
-    };
-    "ms-2.0.0" = {
-      name = "ms";
-      packageName = "ms";
-      version = "2.0.0";
-      src = fetchurl {
-        url = "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz";
-        sha1 = "5608aeadfc00be6c2901df5f9861788de0d597c8";
       };
     };
     "once-1.4.0" = {
@@ -317,16 +299,15 @@ let
     version = "0.7.7";
     src = ./..;
     dependencies = [
-      sources."@slack/types-1.7.0"
-      sources."@slack/webhook-5.0.3"
-      sources."@types/node-14.0.13"
-      sources."axios-0.19.2"
+      sources."@slack/types-1.10.0"
+      sources."@slack/webhook-5.0.4"
+      sources."@types/node-14.14.31"
+      sources."axios-0.21.1"
       sources."balanced-match-1.0.0"
       sources."brace-expansion-1.1.11"
       sources."concat-map-0.0.1"
       sources."core-util-is-1.0.2"
-      sources."debug-3.1.0"
-      sources."follow-redirects-1.5.10"
+      sources."follow-redirects-1.13.2"
       sources."fs.realpath-1.0.0"
       sources."glob-7.1.6"
       sources."immediate-3.0.6"
@@ -336,7 +317,6 @@ let
       sources."jszip-3.5.0"
       sources."lie-3.3.0"
       sources."minimatch-3.0.4"
-      sources."ms-2.0.0"
       sources."once-1.4.0"
       sources."os-tmpdir-1.0.2"
       sources."pako-1.0.11"
