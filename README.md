@@ -47,9 +47,9 @@ Environment variables(development purpose only):
 
 ```sh
 OPAC_REMOTE_URL=http://localhost:4444/wd/hub \
-OPAC_DRIVER_BIN=/nix/store/path/to/chromedriver \
-OPAC_CHROME_BIN=/nix/store/path/to/chromium \
-./bin/opac-notifications
+  OPAC_DRIVER_BIN=/nix/store/path/to/chromedriver \
+  OPAC_CHROME_BIN=/nix/store/path/to/chromium \
+  ./bin/opac-notifications
 ```
 
 Build options:
