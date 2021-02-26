@@ -1,6 +1,6 @@
 {
   "name": "opac-notifications",
-  "version": "0.7.7",
+  "version": "0.7.8",
   "description": "Send the status of OPAC to a channel in Slack.",
   "author": "asbish",
   "license": "MIT",
