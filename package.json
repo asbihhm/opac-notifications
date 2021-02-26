@@ -5,6 +5,10 @@
   "author": "asbish",
   "license": "MIT",
   "private": true,
+  "type": "commonjs",
+  "engines": {
+    "node": ">=14.15.4"
+  },
   "bin": {
     "opac-notifications": "bin/opac-notifications"
   },
@@ -20,9 +24,11 @@
   "devDependencies": {
     "chai": "^4.3.0",
     "eslint": "^7.20.0",
-    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^6.15.0",
+    "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
     "mocha": "^8.3.0",
     "prettier": "^2.2.1",
     "sinon": "^9.2.4"

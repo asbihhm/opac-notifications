@@ -2,19 +2,21 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2020,
   },
-  extends: ['airbnb-base', 'prettier'],
+  extends: ['eslint:recommended', 'plugin:node/recommended', 'prettier'],
   env: {
     mocha: true,
   },
-  rules: {
-    'function-paren-newline': 0,
-    'object-curly-newline': 0,
-    'no-nested-ternary': 0,
-    'import/no-extraneous-dependencies': [
-      2,
-      {
-        devDependencies: ['**/*.spec.js'],
+  overrides: [
+    {
+      files: ['**/*.spec.js'],
+      rules: {
+        'node/no-unpublished-require': [
+          2,
+          {
+            allowModules: ['chai', 'sinon'],
+          },
+        ],
       },
-    ],
-  },
+    },
+  ],
 };
