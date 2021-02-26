@@ -50,15 +50,19 @@ exports.run = (options = {}) => {
 
       const webhook = new IncomingWebhook(slackURL);
 
-      const runDriver = async (user, idx) => {
-        const d = new OPACDriver(user);
-        await d.build(options);
-        await d.getUrl();
-        await d.login();
-        await d.goToStatusPage();
-        const shelf = await d.getShelf();
-        await d.logout();
-        await d.quit();
+      const runDriver = async (user, idx, refDriver) => {
+        const driver = new OPACDriver(user);
+        await driver.build(options).then(() => {
+          refDriver.set(idx, driver);
+        });
+        await driver.getUrl();
+        await driver.login();
+        await driver.goToStatusPage();
+        const shelf = await driver.getShelf();
+        await driver.logout();
+        await driver.quit().then(() => {
+          refDriver.delete(idx);
+        });
 
         if (!shelf) {
           throw new Error("Couldn't get OPAC data");
@@ -89,11 +93,16 @@ exports.run = (options = {}) => {
           return Promise.resolve();
         }
 
+        const refDriver = new Map();
         return past
-          .then(() => runDriver(user, idx))
+          .then(() => runDriver(user, idx, refDriver))
           .catch((err) => {
             console.error(err);
-            process.exit(1);
+            const driver = refDriver.get(idx);
+            if (driver) {
+              driver.quit();
+              refDriver.delete(idx);
+            }
           });
       }, Promise.resolve());
     },
